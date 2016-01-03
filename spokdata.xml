@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE site SYSTEM "http://xml.csc.kth.se/~arielr/DM2517/pro-mittrum/mittrum.dtd">
+<?xml-stylesheet type="text/xsl" href="html.xsl"?>
+
+<!-- Later to be generated with PHP -->
+
+<site>
+	<users>
+		<user admin="FALSE" userID="C23456">
+			<username>Arre</username>
+			<password>lol123</password>
+			<realName>Ariel Blomkvist Rova</realName>
+		</user>
+
+		<user admin="TRUE" userID="H56789">
+			<username>Vgurra</username>
+			<password>wawawiwa</password>
+			<realName>Viktor Gustafsson</realName>
+		</user>
+	</users>
+
+	<posts>
+		<post postID="sevse2" userID="H56789" category="education">
+			<name>Kungliga Tekniska Högskolan - Medieteknik</name>
+			<description>Pluggar på som faa-an</description>
+			<link>www.kth.se</link>
+		</post>
+
+		<post postID="fsef34" userID="H56789" category="employment">
+			<name>John Wall</name>
+			<description>Chef över allt</description>
+			<link>www.johnwall.se</link>
+		</post>
+
+		<post postID="fsf332" userID="H56789" category="education">
+			<name>Livets hårda skola</name>
+			<description>Pluggar där</description>
+			<link>www.lhs.se</link>
+		</post>
+	</posts>
+</site> 
+
+
