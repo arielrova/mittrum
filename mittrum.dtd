@@ -1,0 +1,17 @@
+<!ELEMENT site (users, posts)>
+<!ELEMENT users (user*)>
+<!ELEMENT user (username, password, realName)>
+<!ATTLIST user admin (TRUE|FALSE) #REQUIRED>
+<!ATTLIST user userID ID #REQUIRED>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT realName (#PCDATA)>
+<!ELEMENT authority (admin, user)>
+<!ELEMENT posts (post*)>
+<!ELEMENT post (name, description?, link?)>
+<!ATTLIST post postID ID #REQUIRED>
+<!ATTLIST post userID IDREF #REQUIRED>
+<!ATTLIST post category (education|life|employment|youtube) #REQUIRED>
+<!ELEMENT name (#PCDATA) >
+<!ELEMENT description (#PCDATA) >
+<!ELEMENT link (#PCDATA) >
