@@ -1,6 +1,7 @@
 <?php
 
-require('../includes/config.php'); 
+require('../includes/config.php');
+session_start();
 if(logged_in()) {header('Location: '.DIRADMIN);}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -15,9 +16,14 @@ if(logged_in()) {header('Location: '.DIRADMIN);}
 	<div class="page-wrap">
 		<div class="content">
 		
-		<?php 
+		<?php
 		if($_POST['submit']) {
-			login($conn, $_POST['username'], $_POST['password']);
+      $username = $_POST['username'];
+      $password = $_POST['password'];
+      $_SESSION['username'] = $username;
+      $_SESSION['password'] = $password;
+      
+			login($conn, $username, $password);
 		}
 		?>
 

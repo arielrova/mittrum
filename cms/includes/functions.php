@@ -11,7 +11,7 @@ function login($conn, $user, $pass){
    $pass = strip_tags(mysqli_real_escape_string($conn, $pass));
 
    // check if the user id and password combination exist in database
-   $sql = "SELECT * FROM members WHERE username = '$user' AND password = '$pass'";
+   $sql = "SELECT * FROM users WHERE username = '$user' AND password = '$pass'";
    $result = mysqli_query($conn, $sql) or die('Query failed. ' . mysqli_error($conn));
       
    if (mysqli_num_rows($result) == 1) {

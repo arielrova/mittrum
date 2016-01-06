@@ -1,25 +1,29 @@
 <?php 
-require('../includes/config.php');
-session_start();
-
-$username = $_SESSION['username'];
-$password = $_SESSION['password'];
-echo "Logged in as: ".$username."";
-while($row )
-$userID = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
-echo $userID;
+require('../includes/config.php'); 
 
 if(isset($_POST['submit'])){
-	$title = $_POST['pageTitle'];
-	$content = $_POST['pageCont'];
-	
-	$title = mysqli_real_escape_string($conn, $title);
-	$content = mysqli_real_escape_string($conn, $content);
+
+	$userN = $_POST['userN'];
+	$passW = $_POST['passW'];
+  $realN = $_POST['realN'];
+  $admin = $_POST['admin'];
   
-  mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont) VALUES ('$title','$content')")or die(mysqli_error($conn));
-	$_SESSION['success'] = 'Page Added';
+  // ** Funkar ej men skulle vara snyggare ** //
+  //Radio button has been set to "true"
+  //if(isset($_POST['admin']) && $_POST['admin'] == "true" ) $_POST['admin'] = TRUE;
+  //Radio button has been set to "false" or a value was not selected
+  //else $_POST['admin'] = FALSE;
+	
+	$userN = mysqli_real_escape_string($conn, $userN);
+	$passW = mysqli_real_escape_string($conn, $passW);
+	$realN = mysqli_real_escape_string($conn, $realN);
+  $realN = mysqli_real_escape_string($conn, $admin);
+	
+	mysqli_query($conn, "INSERT INTO users (username,password,realname,admin) VALUES ('$userN','$passW', '$realN', '$admin')")or die(mysqli_error($conn));
+	$_SESSION['success'] = 'User added';
 	header('Location: '.DIRADMIN);
 	exit();
+
 }
 
 ?>
@@ -47,11 +51,14 @@ if(isset($_POST['submit'])){
 
 <div id="content">
 
-<h1>Add Page</h1>
+<h1>Add user</h1>
 
 <form action="" method="post">
-<p>Title:<br /> <input name="pageTitle" type="text" value="" size="103" /></p>
-<p>content<br /><textarea name="pageCont" cols="100" rows="20"></textarea></p>
+<p>username:<br /> <input name="userN" type="text" value="" size="50" /></p>
+<p>password:<br /> <input name="passW" type="text" value="" size="50" /></p>
+<p>realname:<br /> <input name="realN" type="text" value="" size="50" /></p>
+<p>admin?:<br />yes <br /> <input name="admin" type="radio" value="true" />
+          <br />no  <br /> <input name="admin" type="radio" value="false" /></p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 </form>
 
