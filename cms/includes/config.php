@@ -16,10 +16,11 @@ if (mysqli_connect_errno())
   }
 
 // define site path
-define('DIR','http://xml.csc.kth.se/~vigu/DM2517/project/cms');
+//Önödig nu?
+define('DIR','http://xml.csc.kth.se/~vigu/DM2517/project/cms/');
 
 // define admin site path
-define('DIRADMIN','http://xml.csc.kth.se/~vigu/DM2517/project/cms/admin/');
+define('DIRADMIN','http://xml.csc.kth.se/~vigu/DM2517/project/cms/');
 
 // define site title for top of the browser
 define('SITETITLE','Mitt Rum');
