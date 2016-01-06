@@ -5,9 +5,6 @@ session_start();
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
 echo "Logged in as: ".$username."";
-while($row )
-$userID = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
-echo $userID;
 
 if(isset($_POST['submit'])){
 	$title = $_POST['pageTitle'];
@@ -16,9 +13,17 @@ if(isset($_POST['submit'])){
 	$title = mysqli_real_escape_string($conn, $title);
 	$content = mysqli_real_escape_string($conn, $content);
   
-  mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont) VALUES ('$title','$content')")or die(mysqli_error($conn));
+  // Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
+  $result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
+  while($row = mysqli_fetch_object($result)){
+  $userID = $row->userID;
+  }
+  //
+  
+  mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont,userID) VALUES ('$title','$content','$userID')")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Added';
 	header('Location: '.DIRADMIN);
+  mysqli_free_result($result);
 	exit();
 }
 
