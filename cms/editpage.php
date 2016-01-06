@@ -11,10 +11,10 @@ if(isset($_POST['submit'])){
 	$content = $_POST['pageCont'];
 	$pageID = $_POST['pageID'];
 	
-	$title = mysqli_real_escape_string($title);
-	$content = mysqli_real_escape_string($content);
-	
-	mysqli_query("UPDATE pages SET pageTitle='$title', pageCont='$content' WHERE pageID='$pageID'");
+	$title = mysqli_real_escape_string($conn, $title);
+	$content = mysqli_real_escape_string($conn, $content);
+  
+	mysqli_query($conn, "UPDATE pages SET pageTitle='$title', pageCont='$content' WHERE pageID='$pageID'")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Updated';
 	header('Location: '.DIRADMIN);
 	exit();
@@ -38,7 +38,7 @@ if(isset($_POST['submit'])){
 <div id="navigation">
 <ul class="menu">
 <li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
+<li><a href="<?php echo DIRADMIN;?>logout">Logout</a></li>
 <li><a href="<?php echo DIR;?>" target="_blank">View Website</a></li>
 </ul>
 </div>
@@ -63,6 +63,7 @@ $row = mysqli_fetch_object($q);
 <p>content<br /><textarea name="pageCont" cols="100" rows="20"><?php echo $row->pageCont;?></textarea>
 </p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
+
 </form>
 
 </div>

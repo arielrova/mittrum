@@ -23,7 +23,7 @@ if(isset($_POST['submit'])){
   mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont,userID) VALUES ('$title','$content','$userID')")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Added';
 	header('Location: '.DIRADMIN);
-  mysqli_free_result($result);
+  //mysqli_free_result($result);
 	exit();
 }
 

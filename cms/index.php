@@ -58,8 +58,8 @@ if(isset($_GET['delpage'])){
 <div id="navigation">
 	<ul class="menu">
 		<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-    <!-- Här bör vi titta på hur länkningen till varje users unika sida ska gå till. XSL-grejor? -->
-		<li><a href="<?php echo DIRADMIN.$userID;?>" target="_blank">View Website</a></li>
+    <!-- Här bör vi titta på hur länkningen till varje users unika sida ska gå till. XSL-grejor? UPDATE KANSKE KLART-->
+		<?php echo "<li><a href=\"".DIRADMIN."indexUSERHEM.php?id=$userID\">View Website</a></li>" ?>
 		<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
 	</ul>
 </div>

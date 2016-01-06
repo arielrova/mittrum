@@ -1,6 +1,21 @@
 <?php 
 
-require('includes/config.php'); ?>
+require('includes/config.php'); 
+login_required();
+$username = $_SESSION['username'];
+$password = $_SESSION['password'];
+
+// Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
+$result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
+while($row = mysqli_fetch_object($result)){
+$userID = $row->userID;
+}
+//
+
+echo "Logged in as: ".$username."";
+echo "USERID: ".$userID."";
+
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -16,15 +31,7 @@ require('includes/config.php'); ?>
 	<!-- NAV -->
 	<div id="navigation">
 	<ul class="menu">
-	<li><a href="<?php echo DIR;?>">Home</a></li>
-	<?php
-		//get the rest of the pages
-		$sql = mysqli_query($conn, "SELECT * FROM pages WHERE isRoot='1' ORDER BY pageID");
-		while ($row = mysqli_fetch_object($sql))
-		{
-			echo "<li><a href=\"".DIR."?p=$row->pageID\">$row->pageTitle</a></li>"; 
-		}
-	?>
+	  <li><a href="<?php echo DIR;?>">Admin</a></li>
 	</ul>
 	</div>
 	<!-- END NAV -->
@@ -40,7 +47,14 @@ require('includes/config.php'); ?>
 		$id = mysqli_real_escape_string($conn, $id); //make it safe for database use
 		$q = mysqli_query($conn, "SELECT * FROM pages WHERE pageID='$id'");
 	}
-	
+
+	 //get the rest of the pages
+		$sql = mysqli_query($conn, "SELECT * FROM pages WHERE isRoot='1' AND userID='$userID' ORDER BY pageID");
+	  while ($row = mysqli_fetch_object($sql))
+		{
+			echo "<li><a href=\"".DIR."indexUSERHEM.php?p=$row->pageID\">$row->pageTitle</a></li>"; 
+  }
+  
 	//get page data from database and create an object
 	$r = mysqli_fetch_object($q);
 	
