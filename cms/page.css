@@ -1,0 +1,23 @@
+h1{
+	text-align:center;
+}
+.card {
+	display:block;
+	height:100px;
+    width: 200px;
+	margin:1px;
+	border-style: solid;
+	border-width: 0px 0px 0px 5px;
+	overflow:hidden;
+	padding: 10px;
+}
+
+
+.pageTitle {
+	text-align:center;
+}
+
+.pageCont {
+	overflow:hidden;
+	margin:5px;
+}

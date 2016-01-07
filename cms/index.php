@@ -64,7 +64,7 @@ if(isset($_GET['delpage'])){
 	<ul class="menu">
 		<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
     <!-- Här bör vi titta på hur länkningen till varje users unika sida ska gå till. XSL-grejor? UPDATE KANSKE KLART-->
-		<?php echo "<li><a href=\"".DIRADMIN."indexUSERHEM.php?id=$userID\">View Website</a></li>" ?>
+		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
 		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
 			echo "<li><a href=\"".DIRADMIN."adduser.php\">Edit users</a></li>"; 
 		} ?>

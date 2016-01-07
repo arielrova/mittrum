@@ -1,20 +1,16 @@
 <?php 
-
 require('includes/config.php'); 
 login_required();
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
-
 // Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
 $result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
 while($row = mysqli_fetch_object($result)){
 $userID = $row->userID;
 }
 //
-
 echo "Logged in as: ".$username."";
 echo "USERID: ".$userID."";
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,7 +43,6 @@ echo "USERID: ".$userID."";
 		$id = mysqli_real_escape_string($conn, $id); //make it safe for database use
 		$q = mysqli_query($conn, "SELECT * FROM pages WHERE pageID='$id'");
 	}
-
 	 //get the rest of the pages
 		$sql = mysqli_query($conn, "SELECT * FROM pages WHERE isRoot='1' AND userID='$userID' ORDER BY pageID");
 	  while ($row = mysqli_fetch_object($sql))

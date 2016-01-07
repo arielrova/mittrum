@@ -7,14 +7,17 @@ if(!isset($_GET['id']) || $_GET['id'] == ''){ //if no id is passed to this page 
 
 if(isset($_POST['submit'])){
 
-	$title = $_POST['pageTitle'];
-	$content = $_POST['pageCont'];
 	$pageID = $_POST['pageID'];
 	
-	$title = mysqli_real_escape_string($conn, $title);
-	$content = mysqli_real_escape_string($conn, $content);
+	$title = mysqli_real_escape_string($conn, $_POST['pageTitle']);
+	$content = mysqli_real_escape_string($conn,  $_POST['pageCont']);
+  $type = mysqli_real_escape_string($conn,  $_POST['pageType']);
+  $StartEventDate = mysqli_real_escape_string($conn, $_POST['StartEventDate']);
+  $EndEventDate = mysqli_real_escape_string($conn, $_POST['EndEventDate']);
+  $StartEventDate = date('Y-m-d', strtotime(str_replace('-', '/', $StartEventDate)));
+  $EndEventDate = date('Y-m-d', strtotime(str_replace('-', '/', $EndEventDate)));
   
-	mysqli_query($conn, "UPDATE pages SET pageTitle='$title', pageCont='$content' WHERE pageID='$pageID'")or die(mysqli_error($conn));
+	mysqli_query($conn, "UPDATE pages SET pageTitle='$title', pageCont='$content', pageType='$type', StartEventDate='$StartEventDate', EndEventDate='$EndEventDate' WHERE pageID='$pageID'")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Updated';
 	header('Location: '.DIRADMIN);
 	exit();
@@ -62,6 +65,16 @@ $row = mysqli_fetch_object($q);
 </p>
 <p>content<br /><textarea name="pageCont" cols="100" rows="20"><?php echo $row->pageCont;?></textarea>
 </p>
+<p>Startdate(yyyy/mm/dd):<br />
+  <input name="startEventDate" type="date" value="<?php echo $row->StartEventDate;?>" size="50" />
+</p>
+<p>Enddate(yyyy/mm/dd):<br />
+  <input name="EndEventDate" type="date" value="<?php echo $row->EndEventDate;?>" size="50" />
+</p>
+<p>Type<br />Education <br /> <input name="pageType" type="radio" value="" />
+       <br />Employment<br /> <input name="pageType" type="radio" value="" />
+       <br />Life      <br /> <input name="pageType" type="radio" value="" />
+       <br />Youtube   <br /> <input name="pageType" type="radio" value="" /></p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 
 </form>
