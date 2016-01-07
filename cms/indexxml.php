@@ -8,7 +8,7 @@ while($row = mysqli_fetch_object($result)){
 $userID = $row->userID;
 }
 
-$debug = 0; #1 visar xml
+$debug = 1; #1 visar xml
 
 if($debug) {
 	header("Content-type:text/xml");
@@ -21,7 +21,7 @@ if($debug) {
 $returnstring ="";
 
 // the query
-$query = "SELECT pageTitle, pageCont, pageType
+$query = "SELECT pageTitle, pageCont, pageType, StartEventDate, EndEventDate
           FROM pages
           WHERE userID='$userID'
           ORDER BY pageTitle";
@@ -35,6 +35,8 @@ while ($line = mysqli_fetch_object($result)) {
     $pageTitle = htmlspecialchars($line->pageTitle); 
     $pageCont = htmlspecialchars($line->pageCont);
     $pageType = htmlspecialchars($line->pageType);
+    $StartEventDate = htmlspecialchars($line->StartEventDate);
+    $EndEventDate = htmlspecialchars($line->EndEventDate);
     
     // add one word to the result
     // concatenate strings with "."
@@ -42,6 +44,8 @@ while ($line = mysqli_fetch_object($result)) {
     $returnstring = $returnstring . "<pageTitle>$pageTitle</pageTitle>"; 
     $returnstring = $returnstring . "<pageCont>$pageCont</pageCont>";
     $returnstring = $returnstring . "<pageType>$pageType</pageType>";
+    $returnstring = $returnstring . "<starteventdate>$StartEventDate</starteventdate>";
+    $returnstring = $returnstring . "<endeventdate>$EndEventDate</endeventdate>";
     $returnstring = $returnstring . "</page>";
 }
 
