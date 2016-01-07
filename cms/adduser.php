@@ -1,19 +1,20 @@
 <?php 
-require('includes/config.php');
-session_start(); 
 
-if(isset($_POST['submit'])){
-
-	$userN = $_POST['userN'];
-	$passW = $_POST['passW'];
-  $realN = $_POST['realN'];
-  $admin = $_POST['admin'];
-  
   // ** Funkar ej men skulle vara snyggare ** //
   //Radio button has been set to "true"
   //if(isset($_POST['admin']) && $_POST['admin'] == "true" ) $_POST['admin'] = TRUE;
   //Radio button has been set to "false" or a value was not selected
   //else $_POST['admin'] = FALSE;
+
+require('includes/config.php');
+session_start(); 
+
+
+if(isset($_POST['submit'])){
+	$userN = $_POST['userN'];
+	$passW = $_POST['passW'];
+  $realN = $_POST['realN'];
+  $admin = $_POST['admin'];
 	
 	$userN = mysqli_real_escape_string($conn, $userN);
 	$passW = mysqli_real_escape_string($conn, $passW);
@@ -24,6 +25,24 @@ if(isset($_POST['submit'])){
 	$_SESSION['success'] = 'User added';
 	header('Location: '.DIRADMIN);
 	exit();
+	}
+
+if(isset($_POST['submitUserChanges'])) {
+
+	$userID = $_POST['userID'];
+	$userNedit = $_POST['userNedit'];
+	$passWedit = $_POST['passWedit'];
+	$realNedit = $_POST['realNedit'];
+	$adminEdit = $_POST['adminEdit'];
+
+	mysqli_query($conn, 
+	"UPDATE users  
+	SET username='$userNedit', password='$passWedit', realname='$realNedit', admin='$adminEdit'
+	WHERE userID = $userID");
+	$_SESSION['success'] = 'User modified';
+	header('Location: '.DIRADMIN);
+	exit();
+	}
 
 	//run if a page deletion has been requested
 	if(isset($_GET['delpage'])){
@@ -34,10 +53,18 @@ if(isset($_POST['submit'])){
     $_SESSION['success'] = "Page Deleted"; 
     header('Location: ' .DIRADMIN);
    	exit();
-   }
-}
+    }
 
+  if(isset($_GET['deluser'])){
+  	$deluser = $_GET['deluser'];
+  	$deluser = mysqli_real_escape_string($conn, $deluser);
+  	mysqli_query($conn, "DELETE FROM users WHERE userID = '$deluser'");
+  	$_SESSION['success'] = "User Deleted";
+  	header('Location: ' .DIRADMIN);
+  	exit();
+  }
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -49,10 +76,18 @@ if(isset($_POST['submit'])){
 	{
 	   if (confirm("Are you sure you want to delete '" + title + "'"))
 	   {
-		  window.location.href = '<?php echo DIRADMIN;?>?delpage=' + id;
+		  window.location.href = '?delpage=' + id;
+	   }
+	}
+	function deluser(id, name)
+	{
+	   if (confirm("Are you sure you want to delete '" + name + id + "'"))
+	   {
+		  window.location.href = '?deluser=' + id;
 	   }
 	}
 </script>
+
 </head>
 <body>
 <div id="wrapper">
@@ -72,16 +107,57 @@ if(isset($_POST['submit'])){
 <div id="content">
 
 <h1>Add user</h1>
-
+<div id="addUser">
 <form action="" method="post">
-<p>username:<br /> <input name="userN" type="text" value="" size="50" /></p>
-<p>password:<br /> <input name="passW" type="text" value="" size="50" /></p>
-<p>realname:<br /> <input name="realN" type="text" value="" size="50" /></p>
-<p>admin?:<br />yes <br /> <input name="admin" type="radio" value="true" />
-          <br />no  <br /> <input name="admin" type="radio" value="false" /></p>
+<p>username:<br /> <input name="userN" type="text" value="" size="20" /></p>
+<p>password:<br /> <input name="passW" type="text" value="" size="20" /></p>
+<p>realname:<br /> <input name="realN" type="text" value="" size="20" /></p>
+<p>admin?:<br />yes <br /> <input name="admin" type="radio" value="admin" />
+          <br />no  <br /> <input name="admin" type="radio" value="0" /></p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 </form>
+</div>
+<div id="editUser">
+<?php
+	echo "<h1>Edit users</h1>";
 
+	echo "<table>";
+		echo "<tr>";
+			echo "<th>userID</th>";
+			echo "<th>Username</th>";
+			echo "<th>Password</th>";
+			echo "<th>realname</th>";
+			echo "<th>Admin</th>";
+			echo "<th>Execute</th>";
+			echo "<th>Delete</th>";
+		echo "</tr>";
+
+		$returnUsers = '';
+		$users = mysqli_query($conn, "SELECT * FROM users ORDER BY userID ASC");
+		while ($row = mysqli_fetch_object($users)) {
+			$userID = $row->userID;
+			$username = $row->username;
+			$password = $row->password;
+			$realname = $row->realname;
+			$admin = $row->admin;
+
+			$returnUsers .= "<tr>";
+			$returnUsers .= "<form action=\"\" method=\"post\">";
+			$returnUsers .= "<td><input name=\"userID\" type=\"text\" value=\"$userID\" size=\"10\" readonly /></td>";
+			$returnUsers .= "<td><input name=\"userNedit\" type=\"text\" value=\"$username\" size=\"10\" /></td>";
+			$returnUsers .= "<td><input name=\"passWedit\" type=\"text\" value=\"$password\" size=\"10\" /></td>";
+			$returnUsers .= "<td><input name=\"realNedit\" type=\"text\" value=\"$realname\" size=\"10\" /></td>";
+			$returnUsers .= "<td><select name=\"adminEdit\"><option value=\"$admin\">$admin</option><option value=\"admin\">admin</option><option value\"0\">0</option></select></td>";
+			$returnUsers .= "<td><input type=\"submit\" name=\"submitUserChanges\" value=\"Do!\" class=\"button\" /></td>";
+			$returnUsers .= "</form>";
+			$returnUsers .= "<td><a href=\"javascript:deluser('$userID','$username');\">Delete</a></td>";
+			$returnUsers .= "</tr>";
+		}
+		echo $returnUsers;
+		echo "</table>";
+	?>
+</div>
+<div id="editPosts">
 <?php if ($_SESSION["userPrivilege"] == 'superuser') {
 
 	echo "<h1>Edit posts</h1>";
@@ -95,25 +171,25 @@ if(isset($_POST['submit'])){
 			echo "<th>Delete</th>";
 		echo "</tr>";
 
-		$return = '';
+		$returnPosts = '';
 			$posts = mysqli_query($conn, "SELECT userID, pageID, pageTitle FROM pages ORDER BY userID ASC");
 			while ($row = mysqli_fetch_object($posts)) {
 				$userID = $row->userID;
 				$pageID = $row->pageID;
 				$pageTitle = $row->pageTitle;
 
-				$return .= "<tr>";
-				$return .= "<td>$userID</td>"; 
-				$return .= "<td>$pageID</td>";
-				$return .= "<td>$pageTitle</td>";
-				$return .= "<td><a href=\"".DIRADMIN."editpage.php?id=$row->pageID\">Edit</a></td>";
-				$return .= "<td><a href=\"javascript:delpage('$row->pageID','$row->pageTitle');\">Delete</a></td>";
-				$return .= "</tr>";
+				$returnPosts .= "<tr>";
+				$returnPosts .= "<td>$userID</td>"; 
+				$returnPosts .= "<td>$pageID</td>";
+				$returnPosts .= "<td>$pageTitle</td>";
+				$returnPosts .= "<td><a href=\"".DIRADMIN."editpage.php?id=$row->pageID\">Edit</a></td>";
+				$returnPosts .= "<td><a href=\"javascript:delpage('$row->pageID','$row->pageTitle');\">Delete</a></td>";
+				$returnPosts .= "</tr>";
 			}
-			echo $return;
+			echo $returnPosts;
 	echo "</table>";
 } ?>
-
+</div>
 </div>
 
 <div id="footer">	
@@ -123,3 +199,4 @@ if(isset($_POST['submit'])){
 
 </body>
 </html>
+
