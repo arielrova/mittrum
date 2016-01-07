@@ -9,6 +9,7 @@ echo "Logged in as: ".$username."";
 if(isset($_POST['submit'])){
 	$title = $_POST['pageTitle'];
 	$content = $_POST['pageCont'];
+  $type = $_POST['pageType'];
 	
 	$title = mysqli_real_escape_string($conn, $title);
 	$content = mysqli_real_escape_string($conn, $content);
@@ -20,7 +21,7 @@ if(isset($_POST['submit'])){
   }
   //
   
-  mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont,userID) VALUES ('$title','$content','$userID')")or die(mysqli_error($conn));
+  mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont,userID,pageType) VALUES ('$title','$content','$userID','$type')")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Added';
 	header('Location: '.DIRADMIN);
   //mysqli_free_result($result);
@@ -56,7 +57,10 @@ if(isset($_POST['submit'])){
 
 <form action="" method="post">
 <p>Title:<br /> <input name="pageTitle" type="text" value="" size="103" /></p>
-<p>content<br /><textarea name="pageCont" cols="100" rows="20"></textarea></p>
+<p>Content<br /><textarea name="pageCont" cols="100" rows="20"></textarea></p>
+<p>Type<br />Education <br /> <input name="pageType" type="radio" value="education" />
+       <br />Employment<br /> <input name="pageType" type="radio" value="employment" />
+       <br />Youtube   <br /> <input name="pageType" type="radio" value="youtube" /></p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 </form>
 

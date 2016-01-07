@@ -10,11 +10,12 @@ if(isset($_POST['submit'])){
 	$title = $_POST['pageTitle'];
 	$content = $_POST['pageCont'];
 	$pageID = $_POST['pageID'];
+  $type = $_POST['pageType'];
 	
 	$title = mysqli_real_escape_string($conn, $title);
 	$content = mysqli_real_escape_string($conn, $content);
   
-	mysqli_query($conn, "UPDATE pages SET pageTitle='$title', pageCont='$content' WHERE pageID='$pageID'")or die(mysqli_error($conn));
+	mysqli_query($conn, "UPDATE pages SET pageTitle='$title', pageCont='$content', pageType='$type' WHERE pageID='$pageID'")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Updated';
 	header('Location: '.DIRADMIN);
 	exit();
@@ -62,6 +63,9 @@ $row = mysqli_fetch_object($q);
 </p>
 <p>content<br /><textarea name="pageCont" cols="100" rows="20"><?php echo $row->pageCont;?></textarea>
 </p>
+<p>Type<br />Education <br /> <input name="pageType" type="radio" value="education" />
+       <br />Employment<br /> <input name="pageType" type="radio" value="employment" />
+       <br />Youtube   <br /> <input name="pageType" type="radio" value="youtube" /></p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 
 </form>
