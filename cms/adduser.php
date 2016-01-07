@@ -1,5 +1,6 @@
 <?php 
-require('includes/config.php'); 
+require('includes/config.php');
+session_start(); 
 
 if(isset($_POST['submit'])){
 
@@ -24,6 +25,16 @@ if(isset($_POST['submit'])){
 	header('Location: '.DIRADMIN);
 	exit();
 
+	//run if a page deletion has been requested
+	if(isset($_GET['delpage'])){
+		
+	$delpage = $_GET['delpage'];
+	$delpage = mysqli_real_escape_string($conn, $delpage);
+	$sql = mysqli_query($conn, "DELETE FROM pages WHERE pageID = '$delpage'");
+    $_SESSION['success'] = "Page Deleted"; 
+    header('Location: ' .DIRADMIN);
+   	exit();
+   }
 }
 
 ?>
@@ -33,6 +44,15 @@ if(isset($_POST['submit'])){
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo SITETITLE;?></title>
 <link href="<?php echo DIR;?>style/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" type="text/javascript">
+	function delpage(id, title)
+	{
+	   if (confirm("Are you sure you want to delete '" + title + "'"))
+	   {
+		  window.location.href = '<?php echo DIRADMIN;?>?delpage=' + id;
+	   }
+	}
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -61,6 +81,38 @@ if(isset($_POST['submit'])){
           <br />no  <br /> <input name="admin" type="radio" value="false" /></p>
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 </form>
+
+<?php if ($_SESSION["userPrivilege"] == 'superuser') {
+
+	echo "<h1>Edit posts</h1>";
+
+	echo "<table>";
+		echo "<tr>";
+			echo "<th>userID</th>";
+			echo "<th>pageID</th>";
+			echo "<th>pageTitle</th>";
+			echo "<th>Edit</th>";
+			echo "<th>Delete</th>";
+		echo "</tr>";
+
+		$return = '';
+			$posts = mysqli_query($conn, "SELECT userID, pageID, pageTitle FROM pages ORDER BY userID ASC");
+			while ($row = mysqli_fetch_object($posts)) {
+				$userID = $row->userID;
+				$pageID = $row->pageID;
+				$pageTitle = $row->pageTitle;
+
+				$return .= "<tr>";
+				$return .= "<td>$userID</td>"; 
+				$return .= "<td>$pageID</td>";
+				$return .= "<td>$pageTitle</td>";
+				$return .= "<td><a href=\"".DIRADMIN."editpage.php?id=$row->pageID\">Edit</a></td>";
+				$return .= "<td><a href=\"javascript:delpage('$row->pageID','$row->pageTitle');\">Delete</a></td>";
+				$return .= "</tr>";
+			}
+			echo $return;
+	echo "</table>";
+} ?>
 
 </div>
 

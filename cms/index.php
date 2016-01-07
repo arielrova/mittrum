@@ -1,5 +1,6 @@
 <?php 
-require('includes/config.php'); 
+require('includes/config.php');
+session_start(); 
 
 //make sure user is logged in, function will redirect use if not logged in
 login_required();
@@ -7,14 +8,18 @@ $username = $_SESSION['username'];
 $password = $_SESSION['password'];
 
 // Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
-$result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
+$result = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
 while($row = mysqli_fetch_object($result)){
-$userID = $row->userID;
+	$userID = $row->userID;
+	$userPrivilege = $row->admin;
 }
-//
+
+$_SESSION["userPrivilege"] = $userPrivilege;
 
 echo "Logged in as: ".$username."";
-echo "USERID: ".$userID."";
+echo " USERID: ".$userID."";
+echo " Privilege: ".$userPrivilege."";
+
 //if logout has been clicked run the logout function which will destroy any active sessions and redirect to the login page
 if(isset($_GET['logout'])){
 	logout();
@@ -60,6 +65,9 @@ if(isset($_GET['delpage'])){
 		<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
     <!-- Här bör vi titta på hur länkningen till varje users unika sida ska gå till. XSL-grejor? UPDATE KANSKE KLART-->
 		<?php echo "<li><a href=\"".DIRADMIN."indexUSERHEM.php?id=$userID\">View Website</a></li>" ?>
+		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">Edit users</a></li>"; 
+		} ?>
 		<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
 	</ul>
 </div>
