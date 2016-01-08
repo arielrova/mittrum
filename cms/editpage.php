@@ -14,8 +14,8 @@ if(isset($_POST['submit'])){
   $type = mysqli_real_escape_string($conn,  $_POST['pageType']);
   $StartEventDate = mysqli_real_escape_string($conn, $_POST['StartEventDate']);
   $EndEventDate = mysqli_real_escape_string($conn, $_POST['EndEventDate']);
-  $StartEventDate = date('Y-m-d', strtotime(str_replace('-', '/', $StartEventDate)));
-  $EndEventDate = date('Y-m-d', strtotime(str_replace('-', '/', $EndEventDate)));
+  $StartEventDate = date('Y-m-d', strtotime(str_replace('/', '-', $StartEventDate)));
+  $EndEventDate = date('Y-m-d', strtotime(str_replace('/', '-', $EndEventDate)));
   
 	mysqli_query($conn, "UPDATE pages SET pageTitle='$title', pageCont='$content', pageType='$type', StartEventDate='$StartEventDate', EndEventDate='$EndEventDate' WHERE pageID='$pageID'")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Updated';
@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
 <ul class="menu">
 <li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
 <li><a href="<?php echo DIRADMIN;?>logout">Logout</a></li>
-<li><a href="<?php echo DIR;?>" target="_blank">View Website</a></li>
+<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
 </ul>
 </div>
 <!-- END NAV -->
@@ -66,7 +66,7 @@ $row = mysqli_fetch_object($q);
 <p>content<br /><textarea name="pageCont" cols="100" rows="20"><?php echo $row->pageCont;?></textarea>
 </p>
 <p>Startdate(yyyy/mm/dd):<br />
-  <input name="startEventDate" type="date" value="<?php echo $row->StartEventDate;?>" size="50" />
+  <input name="StartEventDate" type="date" value="<?php echo $row->StartEventDate;?>" size="50" />
 </p>
 <p>Enddate(yyyy/mm/dd):<br />
   <input name="EndEventDate" type="date" value="<?php echo $row->EndEventDate;?>" size="50" />

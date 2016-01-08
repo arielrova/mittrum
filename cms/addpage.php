@@ -13,8 +13,8 @@ if(isset($_POST['submit'])){
   $type = mysqli_real_escape_string($conn,  $_POST['pageType']); 
   $StartEventDate = mysqli_real_escape_string($conn, $_POST['StartEventDate']);
   $EndEventDate = mysqli_real_escape_string($conn, $_POST['EndEventDate']);
-  $StartEventDate = date('Y-m-d', strtotime(str_replace('-', '/', $StartEventDate)));
-  $EndEventDate = date('Y-m-d', strtotime(str_replace('-', '/', $EndEventDate)));
+  $StartEventDate = date('Y-m-d', strtotime(str_replace('/', '-', $StartEventDate)));
+  $EndEventDate = date('Y-m-d', strtotime(str_replace('/', '-', $EndEventDate)));
   
   // Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
   $result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
@@ -59,7 +59,7 @@ if(isset($_POST['submit'])){
 
 <form action="" method="post">
 <p>Title:<br /> <input name="pageTitle" type="text" value="" size="103" /></p>
-<p>Startdate(yyyy/mm/dd):<br /><input name="startEventDate" type="date" value="" size="103" /></p>
+<p>Startdate(yyyy/mm/dd):<br /><input name="StartEventDate" type="date" value="" size="103" /></p>
 <p>Enddate(yyyy/mm/dd):<br /><input name="EndEventDate" type="date" value="" size="103" /></p>
 <p>Content<br /><textarea name="pageCont" cols="100" rows="20"></textarea></p>
 <p>Type<br />Education <br /> <input name="pageType" type="radio" value="education" />

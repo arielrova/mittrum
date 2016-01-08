@@ -107,7 +107,6 @@ while($row = mysqli_fetch_object($sql))
 </table>
 
 <p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Page</a></p>
-<p><a href="<?php echo DIRADMIN;?>adduser.php" class="button">Add User</a></p>
 </div>
 
 <div id="footer">	

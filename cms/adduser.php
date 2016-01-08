@@ -99,7 +99,7 @@ if(isset($_POST['submitUserChanges'])) {
 <ul class="menu">
 <li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
 <li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
-<li><a href="<?php echo DIR;?>" target="_blank">View Website</a></li>
+<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
 </ul>
 </div>
 <!-- END NAV -->

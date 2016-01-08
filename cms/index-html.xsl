@@ -11,7 +11,7 @@
      <body>
          <div style="display:flex;justify-content:center;align-items:center;">
            <div style="width:100px;height:100px;">
-          <xsl:apply-templates select="//page"/>
+             <xsl:apply-templates match="site" />
         </div>
       </div>
      </body>
@@ -19,18 +19,28 @@
 </xsl:template>
 <!-- Bygga in funktionalitet för att hantera tidslinje
 -->
-
-
-<xsl:template match="page">
-  <div class="card">
+<xsl:template match="site">
+  <xsl:for-each select="//page">
+    <xsl:sort select="starteventdate" />
+     <div class="card">
         <div class="pageTitle">
           <strong><xsl:value-of select="pageTitle"/></strong>
         </div>
         <div class="pageCont">
           <xsl:value-of select="pageCont"/>
         </div>
+        <div>
+          <xsl:text> StartDate  </xsl:text>
+          <br />
+          <xsl:value-of select="starteventdate" />
+          <br />
+          <xsl:text> EndDate  </xsl:text>
+          <br />
+          <xsl:value-of select="endeventdate" />
+        </div>
         <br />
-  </div>
+      </div>
+    </xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -8,7 +8,7 @@ while($row = mysqli_fetch_object($result)){
 $userID = $row->userID;
 }
 
-$debug = 1; #1 visar xml
+$debug = 0; #1 visar xml
 
 if($debug) {
 	header("Content-type:text/xml");
