@@ -8,6 +8,8 @@ while($row = mysqli_fetch_object($result)){
 $userID = $row->userID;
 }
 
+//HEJHEJHEJHEJ - DETTA ÄR E FELSÖKNINGSKOKMMETNAR !!!!€!€€
+
 $debug = 0; #1 visar xml
 
 if($debug) {
