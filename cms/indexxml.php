@@ -8,6 +8,8 @@ while($row = mysqli_fetch_object($result)){
 $userID = $row->userID;
 }
 
+//HEJHEJHEJHEJ - DETTA ÄR E FELSÖKNINGSKOKMMETNAR !!!!€!€€
+
 $debug = 0; #1 visar xml
 
 if($debug) {
@@ -21,7 +23,7 @@ if($debug) {
 $returnstring ="";
 
 // the query
-$query = "SELECT pageTitle, pageCont, pageType, StartEventDate, EndEventDate
+$query = "SELECT pageTitle, pageID, pageCont, pageType, StartEventDate, EndEventDate
           FROM pages
           WHERE userID='$userID'
           ORDER BY pageTitle";
@@ -32,7 +34,8 @@ $result = mysqli_query($conn, $query) or die("Query failed" . $query);
 // loop over all lines returned by the query. Make sure special characters are replaced.
 while ($line = mysqli_fetch_object($result)) {
     // store content in variables
-    $pageTitle = htmlspecialchars($line->pageTitle); 
+    $pageTitle = htmlspecialchars($line->pageTitle);
+    $pageID = htmlspecialchars($line->pageID); 
     $pageCont = htmlspecialchars($line->pageCont);
     $pageType = htmlspecialchars($line->pageType);
     $StartEventDate = htmlspecialchars($line->StartEventDate);
@@ -41,7 +44,8 @@ while ($line = mysqli_fetch_object($result)) {
     // add one word to the result
     // concatenate strings with "."
     $returnstring = $returnstring . "<page>";
-    $returnstring = $returnstring . "<pageTitle>$pageTitle</pageTitle>"; 
+    $returnstring = $returnstring . "<pageTitle>$pageTitle</pageTitle>";
+    $returnstring = $returnstring . "<id>$pageID</id>";
     $returnstring = $returnstring . "<pageCont>$pageCont</pageCont>";
     $returnstring = $returnstring . "<pageType>$pageType</pageType>";
     $returnstring = $returnstring . "<starteventdate>$StartEventDate</starteventdate>";
