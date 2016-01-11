@@ -17,7 +17,7 @@ if(logged_in()) {header('Location: '.DIRADMIN);}
 		<div class="content">
 		
 		<?php
-		if($_POST['submit']) {
+		if(!empty($_POST['loginsubmit'])) {
       $username = $_POST['username'];
       $password = $_POST['password'];
       $_SESSION['username'] = $username;
@@ -26,17 +26,39 @@ if(logged_in()) {header('Location: '.DIRADMIN);}
 			login($conn, $username, $password);
 		}
 		?>
+		<?php
+		if(!empty($_POST['signupsubmit'])) {
+      if ($_POST["signuppassword"] == $_POST["confirmpassword"]) {
+          SignUp($conn);
+      }
+      else {
+         echo "Password doesn't match";
+      }
+		}
+		?>
 
 <div id="login">
 	<p><?php echo messages();?></p>        
 	<form method="post" action="">
 	<p><label><strong>Username</strong><input type="text" name="username" /></label></p>
 	<p><label><strong>Password</strong><input type="password" name="password" /></label></p>
-	<p><br /><input type="submit" name="submit" class="button" value="login" /></p>                       
-	</form>	  	  
+	<p><br /><input type="submit" name="loginsubmit" class="button" value="login" /></p>                       
+	</form>
 </div>
-		
-		</div>	
+<div id="signup">
+	<p><?php echo messages();?></p>
+  <p>New user? Sign Up:</p>        
+	<form method="post" action="">
+	<p><label><strong>Username</strong><input type="text" name="signupusername" /></label></p>
+	<p><label><strong>Realname</strong><input type="text" name="signupname" /></label></p>
+	<p><label><strong>Password</strong><input type="password" name="signuppassword" /></label></p>
+  <p><label><strong>Confirm password</strong><input type="password" name="confirmpassword" /></label></p>
+	<p><br /><input type="submit" name="signupsubmit" class="button" value="sign up" /></p>                       
+	</form>
+</div>
+
+
+    </div>
 		<div class="clear"></div>		
 	</div>
 <div class="footer">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>	

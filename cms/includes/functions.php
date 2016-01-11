@@ -28,6 +28,27 @@ function login($conn, $user, $pass){
    }
 }
 
+function NewUser($conn) { 
+  $fullname = $_POST['signupname']; 
+  $userName = $_POST['signupusername'];  
+  $password = $_POST['signuppassword']; 
+  $query = "INSERT INTO users (username,password,realname) VALUES ('$userName','$password','$fullname')"; 
+  $data = mysqli_query ($conn, $query)or die(mysqli_error($conn)); 
+  if($data) { echo "YOUR REGISTRATION IS COMPLETED..."; 
+  } 
+}
+//checking the 'user' name which is from Sign-Up.html, is it empty or have some text
+function SignUp($conn) { if(!empty($_POST['signupusername']))  { 
+  $query = mysqli_query($conn, "SELECT * FROM users WHERE username = '$_POST[signupusername]' AND password = '$_POST[signuppassword]'") or die(mysqli_error($conn)); 
+  if(!$row = mysqli_fetch_array($query) or die(mysqli_error($conn))) 
+  { 
+    NewUser($conn); 
+  } 
+  else { echo "SORRY...YOU ARE ALREADY REGISTERED USER..."; 
+  } 
+} 
+}
+
 // Authentication
 function logged_in() {
 	if($_SESSION['authorized'] == true) {

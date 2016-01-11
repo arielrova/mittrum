@@ -1,4 +1,4 @@
-<?php 
+<?php
 require('includes/config.php');
 session_start(); 
 
@@ -54,7 +54,6 @@ if(isset($_GET['delpage'])){
 </script>
 </head>
 <body>
-
 <div id="wrapper">
 
 <div id="logo"><a href="<?php echo DIRADMIN;?>"><img src="images/logo.png" alt="<?php echo SITETITLE;?>" border="0" /></a></div>
@@ -110,6 +109,13 @@ while($row = mysqli_fetch_object($sql))
 </div>
 
 <div id="footer">	
+  <div
+    class="fb-like"
+    data-share="true"
+    data-width="450"
+    data-show-faces="true">
+  </div>
+  
 		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
 </div><!-- close footer -->
 </div><!-- close wrapper -->
