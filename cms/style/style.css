@@ -1,14 +1,11 @@
-/*-------------------------------------------------------+
-| Content Management System 
-| http://www.phphelptutorials.com/
-+--------------------------------------------------------+
-| Author: David Carr  Email: dave@daveismyname.com
-+--------------------------------------------------------+*/
-
 body {
   font-size: 80%;
   font-family:Arial, Helvetica, sans-serif;
   margin:0;
+  background: #485563; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #485563 , #29323c); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #485563 , #29323c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        
 }
 
 #wrapper {
@@ -16,20 +13,9 @@ body {
 	width:960px;
 }
 
-/* Header informatiom */
-
-#logo {
-	font-size:20px;
-	height:23px;
-	margin-bottom:10px;
-	margin-top:10px;
-	width:235px;
-}
-
 /* Navi informatiom */
 
 #navigation{
-	background:#000000;
 	height:40px;   
 }
 
@@ -40,16 +26,24 @@ body {
 	padding:0px;
 }
 .menu a {
-	padding: 		.75em 1em;
+	padding:0em	0.5em 0.75em 0em;
 	text-decoration:none;
+	font-size:20px;
 	color:#ffffff;
 }
 .menu a { 
 	color:#ffffff;
 }
 .menu li {
-	background:#000000;
 	display:inline;
+}
+.logInfo li {
+	padding:0.5em	0.5em 0.75em 0em;
+	font-size:15px;
+	margin:0.5em;
+	display:inline;
+	color:#ffffff;
+	float:right;
 }
 
 /* Content informatiom */
@@ -93,6 +87,7 @@ h1 {
 	  font-size: 1.5em;
 	  line-height: 1em;
 	  padding-bottom:0.2em;
+	  color: #fff;
 }
 
 h2 {

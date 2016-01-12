@@ -14,11 +14,8 @@ while($row = mysqli_fetch_object($result)){
 	$userPrivilege = $row->admin;
 }
 
-$_SESSION["userPrivilege"] = $userPrivilege;
+//$_SESSION["userPrivilege"] = $userPrivilege; behövs denna?
 
-echo "Logged in as: ".$username."";
-echo " USERID: ".$userID."";
-echo " Privilege: ".$userPrivilege."";
 
 //if logout has been clicked run the logout function which will destroy any active sessions and redirect to the login page
 if(isset($_GET['logout'])){
@@ -55,20 +52,19 @@ if(isset($_GET['delpage'])){
 </head>
 <body>
 <div id="wrapper">
-
-<div id="logo"><a href="<?php echo DIRADMIN;?>"><img src="images/logo.png" alt="<?php echo SITETITLE;?>" border="0" /></a></div>
-
 <!-- NAV -->
 <div id="navigation">
 	<ul class="menu">
 		<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-    <!-- Här bör vi titta på hur länkningen till varje users unika sida ska gå till. XSL-grejor? UPDATE KANSKE KLART-->
 		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
 		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
 			echo "<li><a href=\"".DIRADMIN."adduser.php\">Edit users</a></li>"; 
 		} ?>
 		<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
 	</ul>
+  <ul class="logInfo"><li><?php echo " Privilege: ".$userPrivilege.""; ?></li>
+                      <li><?php echo " UserID: ".$userID.""; ?></li>
+                      <li><?php echo "Logged in as: ".$username.""; ?></ul>
 </div>
 <!-- END NAV -->
 
@@ -79,7 +75,7 @@ if(isset($_GET['delpage'])){
 	messages();
 ?>
 
-<h1>Manage Pages</h1>
+<h1>Manage Events§</h1>
 
 <table>
 <tr>
@@ -106,16 +102,7 @@ while($row = mysqli_fetch_object($sql))
 </table>
 
 <p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Page</a></p>
-</div>
-
-<div id="footer">	
-  <div
-    class="fb-like"
-    data-share="true"
-    data-width="450"
-    data-show-faces="true">
-  </div>
-  
+</div>  
 		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
 </div><!-- close footer -->
 </div><!-- close wrapper -->

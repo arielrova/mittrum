@@ -19,12 +19,13 @@ if($debug) {
 }
 ?>
 <site>
+<?php echo "<siteTitle>$username's room</siteTitle>"?>
 <?php
 $returnstring ="";
 
 // the query
 $query = "SELECT pageTitle, pageID, pageCont, pageType, StartEventDate, EndEventDate
-          FROM pages
+          FROM pages NATURAL JOIN users
           WHERE userID='$userID'
           ORDER BY pageTitle";
         
@@ -42,7 +43,7 @@ while ($line = mysqli_fetch_object($result)) {
     $EndEventDate = htmlspecialchars($line->EndEventDate);
     
     // add one word to the result
-    // concatenate strings with "."
+    // concatenate strings with ".";
     $returnstring = $returnstring . "<page>";
     $returnstring = $returnstring . "<pageTitle>$pageTitle</pageTitle>";
     $returnstring = $returnstring . "<id>$pageID</id>";

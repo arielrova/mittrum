@@ -65,10 +65,10 @@ $row = mysqli_fetch_object($q);
 </p>
 <p>content<br /><textarea name="pageCont" cols="100" rows="20"><?php echo $row->pageCont;?></textarea>
 </p>
-<p>Startdate(yyyy/mm/dd):<br />
+<p>Startdate(yyyy-mmd-d):<br />
   <input name="StartEventDate" type="date" value="<?php echo $row->StartEventDate;?>" size="50" />
 </p>
-<p>Enddate(yyyy/mm/dd):<br />
+<p>Enddate(yyyy-mm-d):<br />
   <input name="EndEventDate" type="date" value="<?php echo $row->EndEventDate;?>" size="50" />
 </p>
 <p>Type<br />Education <br /> <input name="pageType" type="radio" value="" />
