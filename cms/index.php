@@ -95,7 +95,9 @@ while($row = mysqli_fetch_object($sql))
 }
 ?>
 </table>
+
 <p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Event</a></p>
+<p><a href="<?php echo DIRADMIN;?>indexxml.php?download" class="button">Download your room</a></p>
 </div>
 
 </div><!-- close wrapper -->

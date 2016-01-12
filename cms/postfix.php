@@ -34,15 +34,7 @@ if (strpos($url,'download') !== false) {
       // if a mobile phone, use a wml stylesheet and set appropriate MIME type
       header("Content-type:text/vnd.wap.wml");
       $xsl->load('index-wml.xsl');
-    } 
-    elseif (ereg("X-Smiles", $UA))  
-    {
-      header("Content-type:text/xml");
-      $xsl->load('index-fo.xsl');
-    }
-
-    else 
-    {
+    } else {
       // if not a mobile phone, use a html stylesheet
       header("Content-type:text/html");
       $xsl->load('index-html.xsl');
