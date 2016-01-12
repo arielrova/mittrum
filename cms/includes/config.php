@@ -19,6 +19,8 @@ if (mysqli_connect_errno())
 //Önödig nu?
 define('DIR','http://xml.csc.kth.se/~vigu/DM2517/project/cms/');
 
+define('DIREDIT','http://xml.csc.kth.se/~vigu/DM2517/project/cms/adduser.php');
+
 // define admin site path
 define('DIRADMIN','http://xml.csc.kth.se/~vigu/DM2517/project/cms/');
 

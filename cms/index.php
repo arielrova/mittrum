@@ -4,21 +4,13 @@ session_start();
 
 //make sure user is logged in, function will redirect use if not logged in
 login_required();
+// Auth variables from login
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
-
-// Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
-$result = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
-while($row = mysqli_fetch_object($result)){
-	$userID = $row->userID;
-	$userPrivilege = $row->admin;
-}
+$userID = $_SESSION['userID'];
+$userPrivilege = $_SESSION['admin'];
 
 $_SESSION["userPrivilege"] = $userPrivilege;
-
-echo "Logged in as: ".$username."";
-echo " USERID: ".$userID."";
-echo " Privilege: ".$userPrivilege."";
 
 //if logout has been clicked run the logout function which will destroy any active sessions and redirect to the login page
 if(isset($_GET['logout'])){
@@ -55,20 +47,19 @@ if(isset($_GET['delpage'])){
 </head>
 <body>
 <div id="wrapper">
-
-<div id="logo"><a href="<?php echo DIRADMIN;?>"><img src="images/logo.png" alt="<?php echo SITETITLE;?>" border="0" /></a></div>
-
 <!-- NAV -->
 <div id="navigation">
 	<ul class="menu">
-		<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-    <!-- Här bör vi titta på hur länkningen till varje users unika sida ska gå till. XSL-grejor? UPDATE KANSKE KLART-->
-		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
+		<li><a href="<?php echo DIRADMIN;?>">ADMIN</a></li>
+		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">ROOM</a></li>" ?>
 		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
-			echo "<li><a href=\"".DIRADMIN."adduser.php\">Edit users</a></li>"; 
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">CONTROL PANEL</a></li>"; 
 		} ?>
-		<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
+		<li><a href="<?php echo DIRADMIN;?>?logout">LOGOUT</a></li>
 	</ul>
+  <ul class="logInfo"><li><?php echo " Privilege: ".$userPrivilege.""; ?></li>
+                      <li><?php echo " UserID: ".$userID.""; ?></li>
+                      <li><?php echo "Logged in as: ".$username.""; ?></ul>
 </div>
 <!-- END NAV -->
 
@@ -79,7 +70,7 @@ if(isset($_GET['delpage'])){
 	messages();
 ?>
 
-<h1>Manage Pages</h1>
+<h1>Manage Events</h1>
 
 <table>
 <tr>
@@ -104,20 +95,9 @@ while($row = mysqli_fetch_object($sql))
 }
 ?>
 </table>
-
-<p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Page</a></p>
+<p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Event</a></p>
 </div>
 
-<div id="footer">	
-  <div
-    class="fb-like"
-    data-share="true"
-    data-width="450"
-    data-show-faces="true">
-  </div>
-  
-		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
-</div><!-- close footer -->
 </div><!-- close wrapper -->
 
 </body>

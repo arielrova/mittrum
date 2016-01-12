@@ -1,14 +1,12 @@
 <?php 
-
-  // ** Funkar ej men skulle vara snyggare ** //
-  //Radio button has been set to "true"
-  //if(isset($_POST['admin']) && $_POST['admin'] == "true" ) $_POST['admin'] = TRUE;
-  //Radio button has been set to "false" or a value was not selected
-  //else $_POST['admin'] = FALSE;
-
 require('includes/config.php');
-session_start(); 
+session_start();
 
+// Auth variables from login
+$username = $_SESSION['username'];
+$password = $_SESSION['password'];
+$userID = $_SESSION['userID'];
+$userPrivilege = $_SESSION['admin'];
 
 if(isset($_POST['submit'])){
 	$userN = $_POST['userN'];
@@ -23,23 +21,6 @@ if(isset($_POST['submit'])){
 	
 	mysqli_query($conn, "INSERT INTO users (username,password,realname,admin) VALUES ('$userN','$passW', '$realN', '$admin')")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'User added';
-	header('Location: '.DIRADMIN);
-	exit();
-	}
-
-if(isset($_POST['submitUserChanges'])) {
-
-	$userID = $_POST['userID'];
-	$userNedit = $_POST['userNedit'];
-	$passWedit = $_POST['passWedit'];
-	$realNedit = $_POST['realNedit'];
-	$adminEdit = $_POST['adminEdit'];
-
-	mysqli_query($conn, 
-	"UPDATE users  
-	SET username='$userNedit', password='$passWedit', realname='$realNedit', admin='$adminEdit'
-	WHERE userID = $userID");
-	$_SESSION['success'] = 'User modified';
 	header('Location: '.DIRADMIN);
 	exit();
 	}
@@ -86,21 +67,69 @@ if(isset($_POST['submitUserChanges'])) {
 		  window.location.href = '?deluser=' + id;
 	   }
 	}
+
+function showUser(str) {
+    if (str == "") {
+        document.getElementById("txtHint").innerHTML = "";
+        return;
+    } else { 
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET","getuser.php?q="+str,true);
+        xmlhttp.send();
+    }
+}
+
+function showPosts(str) {
+    if (str == "") {
+        document.getElementById("txtHint2").innerHTML = "";
+        return;
+    } else { 
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("txtHint2").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET","getposts.php?q="+str,true);
+        xmlhttp.send();
+    }
+}
 </script>
 
 </head>
 <body>
 <div id="wrapper">
 
-<div id="logo"><a href="<?php echo DIR;?>"><img src="images/logo.png" alt="<?php echo SITETITLE;?>" title="<?php echo SITETITLE;?>" border="0" /></a></div><!-- close logo -->
-
 <!-- NAV -->
 <div id="navigation">
-<ul class="menu">
-<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
-<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
-</ul>
+	<ul class="menu">
+		<li><a href="<?php echo DIRADMIN;?>">ADMIN</a></li>
+		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">ROOM</a></li>" ?>
+		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">CONTROL PANEL</a></li>"; 
+		} ?>
+		<li><a href="<?php echo DIRADMIN;?>?logout">LOGOUT</a></li>
+	</ul>
+  <ul class="logInfo"><li><?php echo " Privilege: ".$userPrivilege.""; ?></li>
+                      <li><?php echo " UserID: ".$userID.""; ?></li>
+                      <li><?php echo "Logged in as: ".$username.""; ?></ul>
 </div>
 <!-- END NAV -->
 
@@ -117,86 +146,51 @@ if(isset($_POST['submitUserChanges'])) {
 <p><input type="submit" name="submit" value="Submit" class="button" /></p>
 </form>
 </div>
+<h1>Edit users</h1>
+<?php echo messages();?>
 <div id="editUser">
 <?php
-	echo "<h1>Edit users</h1>";
-
-	echo "<table>";
-		echo "<tr>";
-			echo "<th>userID</th>";
-			echo "<th>Username</th>";
-			echo "<th>Password</th>";
-			echo "<th>realname</th>";
-			echo "<th>Admin</th>";
-			echo "<th>Execute</th>";
-			echo "<th>Delete</th>";
-		echo "</tr>";
-
-		$returnUsers = '';
-		$users = mysqli_query($conn, "SELECT * FROM users ORDER BY userID ASC");
-		while ($row = mysqli_fetch_object($users)) {
-			$userID = $row->userID;
+echo "<select name=users onchange=showUser(this.value)>";
+echo "<form>";
+echo "<option value=''>Pick a user:</option>";
+  $returnUsers='';
+  $users = mysqli_query($conn, "SELECT * FROM users ORDER BY userID ASC");
+	while ($row = mysqli_fetch_object($users)) {
 			$username = $row->username;
-			$password = $row->password;
-			$realname = $row->realname;
-			$admin = $row->admin;
-
-			$returnUsers .= "<tr>";
-			$returnUsers .= "<form action=\"\" method=\"post\">";
-			$returnUsers .= "<td><input name=\"userID\" type=\"text\" value=\"$userID\" size=\"10\" readonly /></td>";
-			$returnUsers .= "<td><input name=\"userNedit\" type=\"text\" value=\"$username\" size=\"10\" /></td>";
-			$returnUsers .= "<td><input name=\"passWedit\" type=\"text\" value=\"$password\" size=\"10\" /></td>";
-			$returnUsers .= "<td><input name=\"realNedit\" type=\"text\" value=\"$realname\" size=\"10\" /></td>";
-			$returnUsers .= "<td><select name=\"adminEdit\"><option value=\"$admin\">$admin</option><option value=\"admin\">admin</option><option value\"0\">0</option></select></td>";
-			$returnUsers .= "<td><input type=\"submit\" name=\"submitUserChanges\" value=\"Do!\" class=\"button\" /></td>";
-			$returnUsers .= "</form>";
-			$returnUsers .= "<td><a href=\"javascript:deluser('$userID','$username');\">Delete</a></td>";
-			$returnUsers .= "</tr>";
-		}
-		echo $returnUsers;
-		echo "</table>";
-	?>
+      $userID = $row->userID;
+      
+      $returnUsers .= "<option value=\"$userID\">$username</option>";
+    }
+      echo $returnUsers;
+echo "</select>";
+echo "</form>";
+?>
+<br>
 </div>
+<div id="txtHint"></div>
+<h1>Edit users</h1>
 <div id="editPosts">
 <?php if ($_SESSION["userPrivilege"] == 'superuser') {
 
-	echo "<h1>Edit posts</h1>";
-
-	echo "<table>";
-		echo "<tr>";
-			echo "<th>userID</th>";
-			echo "<th>pageID</th>";
-			echo "<th>pageTitle</th>";
-			echo "<th>Edit</th>";
-			echo "<th>Delete</th>";
-		echo "</tr>";
-
-		$returnPosts = '';
-			$posts = mysqli_query($conn, "SELECT userID, pageID, pageTitle FROM pages ORDER BY userID ASC");
-			while ($row = mysqli_fetch_object($posts)) {
-				$userID = $row->userID;
-				$pageID = $row->pageID;
-				$pageTitle = $row->pageTitle;
-
-				$returnPosts .= "<tr>";
-				$returnPosts .= "<td>$userID</td>"; 
-				$returnPosts .= "<td>$pageID</td>";
-				$returnPosts .= "<td>$pageTitle</td>";
-				$returnPosts .= "<td><a href=\"".DIRADMIN."editpage.php?id=$row->pageID\">Edit</a></td>";
-				$returnPosts .= "<td><a href=\"javascript:delpage('$row->pageID','$row->pageTitle');\">Delete</a></td>";
-				$returnPosts .= "</tr>";
-			}
-			echo $returnPosts;
-	echo "</table>";
+  echo "<select name=users onchange=showPosts(this.value)>";
+  echo "<form>";
+  echo "<option value=''>Choose a post:</option>";
+    $returnPosts='';
+    $posts = mysqli_query($conn, "SELECT * FROM pages ORDER BY pageTitle ASC");
+  	while ($row = mysqli_fetch_object($posts)) {
+  			$post = $row->pageTitle;
+        $postID = $row->pageID;
+      
+        $returnPosts .= "<option value=\"$postID\">$post</option>";
+      }
+        echo $returnPosts;
+  echo "</select>";
+  echo "</form>";
 } ?>
 </div>
+<div id="txtHint2"></div>
 </div>
-
-<div id="footer">	
-		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
-</div><!-- close footer -->
 </div><!-- close wrapper -->
 
 </body>
 </html>
-

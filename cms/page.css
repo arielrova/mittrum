@@ -1,20 +1,32 @@
 h1{
 	text-align:center;
+	margin-left: -70px;
 }
 .card {
 	display:inline-block;
 	margin:1px;
+	width: 200px;
 	border-style: solid;
-	border-width: 1px 1px 1px 5px;
-	overflow:scroll;
-	padding: 10px;
+	border-width: 0px 0px 0px 5px;
+	padding: 0px 10px 0px 10px;
+	text-align:center;
 }
 
 
 .pageTitle {
+	margin-top:0px;
 	text-align:center;
+	font:20px bold;
 }
 
 .pageCont {
+	padding: 5px;
+	overflow:scroll;
 	margin:5px;
+	background:#666;
+	border-radius: 25px;
+}
+
+.date {
+	font-size:14px;
 }

@@ -1,12 +1,11 @@
 <?php
 require('includes/config.php'); 
+// Auth variables from login
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
-// Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
-$result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
-while($row = mysqli_fetch_object($result)){
-$userID = $row->userID;
-}
+$userID = $_SESSION['userID'];
+$userPrivilege = $_SESSION['admin'];
+
 
 $debug = 0; #1 visar xml
 
@@ -22,6 +21,8 @@ if($debug) {
 <?php
 $returnstring .= "<!DOCTYPE site SYSTEM \"http://xml.csc.kth.se/~arielr/DM2517/pro-mittrum/cms/mittrum.dtd\">";
 $returnstring .= "<site>";
+$returnstring .= "<siteTitle>$username's room</siteTitle>";
+
 
 // the query
 $query = "SELECT pageTitle, pageID, pageCont, pageType, StartEventDate, EndEventDate

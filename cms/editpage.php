@@ -1,5 +1,10 @@
 <?php 
 require('includes/config.php'); 
+// Auth variables from login
+$username = $_SESSION['username'];
+$password = $_SESSION['password'];
+$userID = $_SESSION['userID'];
+$userPrivilege = $_SESSION['admin'];
 
 if(!isset($_GET['id']) || $_GET['id'] == ''){ //if no id is passed to this page take user back to previous page
 	header('Location: '.DIRADMIN); 
@@ -34,16 +39,20 @@ if(isset($_POST['submit'])){
 </head>
 <body>
 <div id="wrapper">
-
-<div id="logo"><a href="<?php echo DIR;?>"><img src="images/logo.png" alt="<?php echo SITETITLE;?>" title="<?php echo SITETITLE;?>" border="0" /></a></div><!-- close logo -->
-
+  
 <!-- NAV -->
 <div id="navigation">
-<ul class="menu">
-<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-<li><a href="<?php echo DIRADMIN;?>logout">Logout</a></li>
-<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
-</ul>
+	<ul class="menu">
+		<li><a href="<?php echo DIRADMIN;?>">ADMIN</a></li>
+		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">ROOM</a></li>" ?>
+		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">CONTROL PANEL</a></li>"; 
+		} ?>
+		<li><a href="<?php echo DIRADMIN;?>?logout">LOGOUT</a></li>
+	</ul>
+  <ul class="logInfo"><li><?php echo " Privilege: ".$userPrivilege.""; ?></li>
+                      <li><?php echo " UserID: ".$userID.""; ?></li>
+                      <li><?php echo "Logged in as: ".$username.""; ?></ul>
 </div>
 <!-- END NAV -->
 
@@ -65,10 +74,10 @@ $row = mysqli_fetch_object($q);
 </p>
 <p>content<br /><textarea name="pageCont" cols="100" rows="20"><?php echo $row->pageCont;?></textarea>
 </p>
-<p>Startdate(yyyy/mm/dd):<br />
+<p>Startdate(yyyy-mmd-d):<br />
   <input name="StartEventDate" type="date" value="<?php echo $row->StartEventDate;?>" size="50" />
 </p>
-<p>Enddate(yyyy/mm/dd):<br />
+<p>Enddate(yyyy-mm-d):<br />
   <input name="EndEventDate" type="date" value="<?php echo $row->EndEventDate;?>" size="50" />
 </p>
 <p>Type<br />Education <br /> <input name="pageType" type="radio" value="" />
@@ -80,10 +89,6 @@ $row = mysqli_fetch_object($q);
 </form>
 
 </div>
-
-<div id="footer">	
-		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
-</div><!-- close footer -->
 </div><!-- close wrapper -->
 
 </body>
