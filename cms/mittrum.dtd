@@ -1,0 +1,9 @@
+
+<!ELEMENT site (page*)>
+<!ELEMENT page (pageTitle, id, pageCont, pageType, starteventdate, endeventdate)>
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT pageTitle (#PCDATA)>
+<!ELEMENT pageCont (#PCDATA)>
+<!ELEMENT pageType (#PCDATA)>
+<!ELEMENT starteventdate (#PCDATA)>
+<!ELEMENT endeventdate (#PCDATA)>

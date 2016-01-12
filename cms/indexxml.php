@@ -8,20 +8,20 @@ while($row = mysqli_fetch_object($result)){
 $userID = $row->userID;
 }
 
-//HEJHEJHEJHEJ - DETTA ÄR E FELSÖKNINGSKOKMMETNAR !!!!€!€€
-
 $debug = 0; #1 visar xml
 
+
 if($debug) {
-	header("Content-type:text/xml");
+	header("Content-type:text/xml;charset=utf-8");
 } else {
 	include("prefix.php");
 }
+
 ?>
-<site>
-<?php echo "<siteTitle>$username's room</siteTitle>"?>
+
 <?php
-$returnstring ="";
+$returnstring .= "<!DOCTYPE site SYSTEM \"http://xml.csc.kth.se/~arielr/DM2517/pro-mittrum/cms/mittrum.dtd\">";
+$returnstring .= "<site>";
 
 // the query
 $query = "SELECT pageTitle, pageID, pageCont, pageType, StartEventDate, EndEventDate
@@ -54,10 +54,14 @@ while ($line = mysqli_fetch_object($result)) {
     $returnstring = $returnstring . "</page>";
 }
 
+$returnstring .= "</site>";
+
 // convert the result to utf8 before it is printed (often not necessary)
-print utf8_encode($returnstring);
+//print utf8_encode($returnstring);
+echo $returnstring;
+
 ?>
-</site>
+
 <?php 
 if (!($debug)) {
 	// do the transformations. Look in the file postfix.php to see how it works.
