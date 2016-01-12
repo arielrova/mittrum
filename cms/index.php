@@ -4,18 +4,13 @@ session_start();
 
 //make sure user is logged in, function will redirect use if not logged in
 login_required();
+// Auth variables from login
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
+$userID = $_SESSION['userID'];
+$userPrivilege = $_SESSION['admin'];
 
-// Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
-$result = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
-while($row = mysqli_fetch_object($result)){
-	$userID = $row->userID;
-	$userPrivilege = $row->admin;
-}
-
-//$_SESSION["userPrivilege"] = $userPrivilege; behövs denna?
-
+$_SESSION["userPrivilege"] = $userPrivilege;
 
 //if logout has been clicked run the logout function which will destroy any active sessions and redirect to the login page
 if(isset($_GET['logout'])){
@@ -55,12 +50,12 @@ if(isset($_GET['delpage'])){
 <!-- NAV -->
 <div id="navigation">
 	<ul class="menu">
-		<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">View Website</a></li>" ?>
+		<li><a href="<?php echo DIRADMIN;?>">ADMIN</a></li>
+		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">ROOM</a></li>" ?>
 		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
-			echo "<li><a href=\"".DIRADMIN."adduser.php\">Edit users</a></li>"; 
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">CONTROL PANEL</a></li>"; 
 		} ?>
-		<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
+		<li><a href="<?php echo DIRADMIN;?>?logout">LOGOUT</a></li>
 	</ul>
   <ul class="logInfo"><li><?php echo " Privilege: ".$userPrivilege.""; ?></li>
                       <li><?php echo " UserID: ".$userID.""; ?></li>
@@ -75,7 +70,7 @@ if(isset($_GET['delpage'])){
 	messages();
 ?>
 
-<h1>Manage Events§</h1>
+<h1>Manage Events</h1>
 
 <table>
 <tr>
@@ -100,11 +95,9 @@ while($row = mysqli_fetch_object($sql))
 }
 ?>
 </table>
+<p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Event</a></p>
+</div>
 
-<p><a href="<?php echo DIRADMIN;?>addpage.php" class="button">Add Page</a></p>
-</div>  
-		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
-</div><!-- close footer -->
 </div><!-- close wrapper -->
 
 </body>

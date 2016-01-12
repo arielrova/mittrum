@@ -2,9 +2,11 @@
 require('includes/config.php');
 session_start();
 
+// Auth variables from login
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
-echo "Logged in as: ".$username."";
+$userID = $_SESSION['userID'];
+$userPrivilege = $_SESSION['admin'];
 
 if(isset($_POST['submit'])){
 
@@ -41,28 +43,32 @@ if(isset($_POST['submit'])){
 <body>
 <div id="wrapper">
 
-<div id="logo"><a href="<?php echo DIR;?>"><img src="images/logo.png" alt="<?php echo SITETITLE;?>" title="<?php echo SITETITLE;?>" border="0" /></a></div><!-- close logo -->
-
 <!-- NAV -->
 <div id="navigation">
-<ul class="menu">
-<li><a href="<?php echo DIRADMIN;?>">Admin</a></li>
-<li><a href="<?php echo DIRADMIN;?>?logout">Logout</a></li>
-<li><a href="<?php echo DIR;?>" target="_blank">View Website</a></li>
-</ul>
+	<ul class="menu">
+		<li><a href="<?php echo DIRADMIN;?>">ADMIN</a></li>
+		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">ROOM</a></li>" ?>
+		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">EDIT USERS</a></li>"; 
+		} ?>
+		<li><a href="<?php echo DIRADMIN;?>?logout">LOGOUT</a></li>
+	</ul>
+  <ul class="logInfo"><li><?php echo " Privilege: ".$userPrivilege.""; ?></li>
+                      <li><?php echo " UserID: ".$userID.""; ?></li>
+                      <li><?php echo "Logged in as: ".$username.""; ?></ul>
 </div>
 <!-- END NAV -->
 
 <div id="content">
 
-<h1>Add Page</h1>
+<h1>Add Event</h1>
 
 <form action="" method="post">
 <p>Title:<br /> <input name="pageTitle" type="text" value="" size="103" /></p>
 <p>Startdate(yyyy/mm/dd):<br /><input name="StartEventDate" type="date" value="" size="103" /></p>
 <p>Enddate(yyyy/mm/dd):<br /><input name="EndEventDate" type="date" value="" size="103" /></p>
 <p>Content<br /><textarea name="pageCont" cols="100" rows="20"></textarea></p>
-<p>Type<br />Education <br /> <input name="pageType" type="radio" value="education" />
+<p>Type:<br /><br />Education <br /> <input name="pageType" type="radio" value="education" />
        <br />Employment<br /> <input name="pageType" type="radio" value="employment" />
        <br />Life      <br /> <input name="pageType" type="radio" value="life" />
        <br />Youtube   <br /> <input name="pageType" type="radio" value="youtube" /></p>
@@ -70,10 +76,6 @@ if(isset($_POST['submit'])){
 </form>
 
 </div>
-
-<div id="footer">	
-		<div class="copy">&copy; <?php echo SITETITLE.' '. date('Y');?> </div>
-</div><!-- close footer -->
 </div><!-- close wrapper -->
 
 </body>

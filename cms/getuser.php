@@ -21,32 +21,10 @@ if(isset($_POST['submitUserChanges'])) {
 	}
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, td, th {
-    border: 1px solid black;
-    padding: 5px;
-}
-
-th {text-align: left;}
-</style>
-</head>
-<body>
-
-
-
 <?php
 $q = intval($_GET['q']);
 $sql="SELECT * FROM users WHERE userID = '".$q."'";
 
-echo "<h1>Edit users</h1>";
 echo "<table>";
 	echo "<tr>";
 		echo "<th>userID</th>";
@@ -81,5 +59,3 @@ echo "<table>";
 	echo "</table>";
   
 ?>
-</body>
-</html>

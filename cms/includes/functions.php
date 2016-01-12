@@ -13,6 +13,14 @@ function login($conn, $user, $pass){
    // check if the user id and password combination exist in database
    $sql = "SELECT * FROM users WHERE username = '$user' AND password = '$pass'";
    $result = mysqli_query($conn, $sql) or die('Query failed. ' . mysqli_error($conn));
+     
+     while($row = mysqli_fetch_object($result)){
+       $userID = $row->userID;
+       $userPrivilege = $row->admin;
+     }
+   
+   $_SESSION['admin'] = $userPrivilege;
+   $_SESSION['userID'] = $userID;
       
    if (mysqli_num_rows($result) == 1) {
       // the username and password match,
