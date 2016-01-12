@@ -168,7 +168,7 @@ echo "</form>";
 <br>
 </div>
 <div id="txtHint"></div>
-<h1>Edit users</h1>
+<h1>Edit posts</h1>
 <div id="editPosts">
 <?php if ($_SESSION["userPrivilege"] == 'superuser') {
 
