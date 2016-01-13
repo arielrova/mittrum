@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
 		<li><a href="<?php echo DIRADMIN;?>">ADMIN</a></li>
 		<?php echo "<li><a href=\"".DIRADMIN."indexxml.php?id=$userID\">ROOM</a></li>" ?>
 		<?php if($userPrivilege == 'superuser' or $userPrivilege == 'admin') {
-			echo "<li><a href=\"".DIRADMIN."adduser.php\">EDIT USERS</a></li>"; 
+			echo "<li><a href=\"".DIRADMIN."adduser.php\">CONTROL PANEL</a></li>"; 
 		} ?>
 		<li><a href="<?php echo DIRADMIN;?>?logout">LOGOUT</a></li>
 	</ul>
