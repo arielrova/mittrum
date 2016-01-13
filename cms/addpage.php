@@ -18,13 +18,6 @@ if(isset($_POST['submit'])){
   $StartEventDate = date('Y-m-d', strtotime(str_replace('/', '-', $StartEventDate)));
   $EndEventDate = date('Y-m-d', strtotime(str_replace('/', '-', $EndEventDate)));
   
-  // Denna rad kanske ska tillhöra ett auth-system som koppar ihop anvdändare med username hela tiden SENARE.
-  $result = mysqli_query($conn, "SELECT userID FROM users WHERE username='$username' AND password='$password'");
-  while($row = mysqli_fetch_object($result)){
-  $userID = $row->userID;
-  }
-  //
-  
   mysqli_query($conn, "INSERT INTO pages (pageTitle,pageCont,userID,pageType,StartEventDate,EndEventDate) VALUES ('$title','$content','$userID','$type','$StartEventDate','$EndEventDate')")or die(mysqli_error($conn));
 	$_SESSION['success'] = 'Page Added';
 	header('Location: '.DIRADMIN);
