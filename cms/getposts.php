@@ -23,7 +23,7 @@ if(isset($_POST['submitUserChanges'])) {
 ?>
 <?php
 $q = intval($_GET['q']);
-$sql="SELECT * FROM pages WHERE userID = '".$q."'";
+$sql="SELECT * FROM pages WHERE pageID = '".$q."'";
 
 echo "<table>";
 	echo "<tr>";
